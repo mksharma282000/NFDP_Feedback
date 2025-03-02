@@ -7,8 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import csc from "../assets/csc.png";
-import iit from "../assets/iit.png";
+import iit from "../assets/iit.svg";
 import Image from "next/image";
+import background from "@/assets/background.png";
 
 // Import GIF and static Emojis
 import angryEmoji from "../assets/rate1.gif";
@@ -120,106 +121,115 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-100 to-blue-50 md:p-6 p-2 grid md:space-y-6 space-y-2 min-h-screen">
-      <div className="flex flex-row justify-between px-6 items-center text-center md:text-left">
-        <Image className="w-12 md:w-20" src={csc} alt="csc" />
-        <div className="my-4 md:my-0">
-          <h2 className="text-xl md:text-3xl font-bold text-gray-800">
-            Matya Saksharta
-          </h2>
-          <p className="text-gray-500 text-xs">
-            Share your experience with us!
-          </p>
-        </div>
-        <Image className="w-10 md:w-20" src={iit} alt="iit" />
+    <div>
+      <div className="absolute ">
+        <Image
+          src={background}
+          alt="backgroundimg"
+          className="min-h-screen bg-no-repeat  bg-center"
+        ></Image>
       </div>
-      <div className="w-[90%] mx-auto bg-white p-4 md:p-8 shadow-xl rounded-2xl">
-        <Card>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label>Name</Label>
-                <Input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
-              <div>
-                <Label>You are</Label>
-                <div className="flex flex-wrap gap-2">
-                  {["Govt official", "VLE", "Fisherman"].map((role) => (
-                    <Button
-                      key={role}
-                      type="button"
-                      variant={formData.role === role ? "default" : "outline"}
-                      onClick={() => handleRoleSelect(role)}
-                    >
-                      {role}
-                    </Button>
+      <div className="relative  md:p-6 p-2 grid md:space-y-6 space-y-2 min-h-screen">
+        <div className="flex flex-row justify-between px-6 items-center text-center md:text-left">
+          <Image className="w-[111px] h-[60px]" src={csc} alt="csc" />
+          <Image className="w-[337px] h-[68px]" src={iit} alt="iit" />
+        </div>
+
+        <h2 className="flex justify-center text-[40px] md:text-3xl font-bold text-[#0060A9] text-center">
+          Matya Saksharta
+        </h2>
+        {/* <p className="text-gray-500 text-xs">
+            Share your experience with us!
+          </p> */}
+
+       
+          <Card>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Label>Name</Label>
+                  <Input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>You are</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {["Govt official", "VLE", "Fisherman"].map((role) => (
+                      <Button
+                        key={role}
+                        type="button"
+                        variant={formData.role === role ? "outline" : "default"}
+                        onClick={() => handleRoleSelect(role)}
+                      >
+                        {role}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <Label className="">How would you rate the event?</Label>
+                  {[
+                    { key: "foodRating", label: "Food Quality" },
+                    { key: "arrangementRating", label: "Arrangements" },
+                    { key: "overallRating", label: "Overall Experience" },
+                  ].map(({ key, label }) => (
+                    <div key={key} className="grid grid-cols-2">
+                      <Label>{label}</Label>
+                      <div className="flex justify-center space-x-2 mb-[24px]">
+                        {emojis.map((emoji) => (
+                          <button
+                            key={emoji.value}
+                            type="button"
+                            className={`p-2 rounded-full ${
+                              formData[key] === emoji.value
+                                ? "bg-blue-400"
+                                : "bg-gray-100"
+                            }`}
+                            onClick={() => handleRatingSelect(key, emoji.value)}
+                          >
+                            <Image
+                              src={
+                                activeAnimation[key] === emoji.value
+                                  ? emoji.gif
+                                  : emoji.static
+                              }
+                              alt={emoji.label}
+                              width={40}
+                              height={40}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
-              </div>
-              <div>
-                <Label className="mb-4">How would you rate the event?</Label>
-                {[
-                  { key: "foodRating", label: "Food Quality" },
-                  { key: "arrangementRating", label: "Arrangements" },
-                  { key: "overallRating", label: "Overall Experience" },
-                ].map(({ key, label }) => (
-                  <div key={key}>
-                    <Label>{label}</Label>
-                    <div className="flex justify-center space-x-2 mt-2 mb-4">
-                      {emojis.map((emoji) => (
-                        <button
-                          key={emoji.value}
-                          type="button"
-                          className={`p-2 rounded-full ${
-                            formData[key] === emoji.value
-                              ? "bg-blue-400"
-                              : "bg-gray-100"
-                          }`}
-                          onClick={() => handleRatingSelect(key, emoji.value)}
-                        >
-                          <Image
-                            src={
-                              activeAnimation[key] === emoji.value
-                                ? emoji.gif
-                                : emoji.static
-                            }
-                            alt={emoji.label}
-                            width={40}
-                            height={40}
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <Label>Comments</Label>
-                <Textarea
-                  name="comments"
-                  value={formData.comments}
-                  onChange={handleChange}
-                  placeholder="Enter your comments"
-                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <Button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-3 rounded-lg"
-                disabled={loading}
-              >
-                {loading ? "Submitting..." : "Submit"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+                <div>
+                  <Label>Comments</Label>
+                  <Textarea
+                    name="comments"
+                    value={formData.comments}
+                    onChange={handleChange}
+                    placeholder="Enter your comments"
+                    className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-500 text-white py-3 rounded-lg"
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        
       </div>
     </div>
   );

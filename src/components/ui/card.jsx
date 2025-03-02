@@ -10,7 +10,7 @@ function Card({
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+        "bg-card bg-white rounded-[40px] shadow-[0px_0px_12px_0px_rgba(0,0,0,0.10)]   justify-between items-end  overflow-hidden text-card-foreground flex flex-col gap-6 p-6",
         className
       )}
       {...props} />
@@ -57,7 +57,7 @@ function CardContent({
   className,
   ...props
 }) {
-  return (<div data-slot="card-content" className={cn("px-6", className)} {...props} />);
+  return (<div data-slot="card-content" className={cn("px-[40px] w-full", className)} {...props} />);
 }
 
 function CardFooter({
