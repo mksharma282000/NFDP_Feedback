@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import csc from "../assets/csc.png";
+import iit from "../assets/iit.png";
+
+import Image from "next/image";
+
+const emojis = ["😡", "😟", "😐", "😊", "😍"]; // Emoji ratings
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +23,7 @@ const FeedbackForm = () => {
     comments: "",
     deviceInfo: "",
   });
+
   useEffect(() => {
     const getDeviceInfo = () => {
       const userAgent = navigator.userAgent;
@@ -27,6 +34,10 @@ const FeedbackForm = () => {
 
   const handleRoleSelect = (role) => {
     setFormData({ ...formData, role });
+  };
+
+  const handleRatingSelect = (name, value) => {
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleChange = (e) => {
@@ -44,18 +55,17 @@ const FeedbackForm = () => {
         },
         body: JSON.stringify(formData),
       });
-  
-      // ✅ Ensure response is not empty before parsing JSON
-      const text = await response.text(); // Get response as text
+
+      const text = await response.text();
       let result;
       try {
-        result = JSON.parse(text); // Try parsing JSON
+        result = JSON.parse(text);
       } catch (error) {
         console.error("Response is not valid JSON:", text);
         alert("Unexpected server response. Please try again.");
         return;
       }
-  
+
       if (response.ok) {
         alert("Thank you for your feedback!");
         setFormData({
@@ -75,91 +85,100 @@ const FeedbackForm = () => {
       alert("Something went wrong. Please try again later.");
     }
   };
-  
 
   return (
-    <Card className="max-w-lg mx-auto p-6 shadow-md rounded-2xl">
-      <CardContent>
-        <h2 className="text-2xl font-semibold text-center mb-4">
-          Matya Saksharta
-        </h2>
-        <p className="text-center text-gray-500 mb-6">Tagline</p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label>Name</Label>
-            <Input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="w-full"
-            />
-          </div>
-          <div>
-            <Label>You are...</Label>
-            <div className="flex space-x-2">
-              {["Govt official", "VLE", "Fisherman"].map((role) => (
-                <button
-                  key={role}
-                  type="button"
-                  className={`px-4 py-2 rounded-md ${
-                    formData.role === role
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() => handleRoleSelect(role)}
-                >
-                  {role}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <Label>How would you rate the event?</Label>
-            {[
-              { label: "Food", name: "foodRating" },
-              { label: "Arrangement", name: "arrangementRating" },
-              { label: "Overall", name: "overallRating" },
-            ].map((category) => (
-              <div key={category.name} className="mb-2">
-                <Label>{category.label}</Label>
-                <div className="flex space-x-2">
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <label
-                      key={`${category.name}-${num}`}
-                      className="flex items-center space-x-1"
+    <div className="bg-gradient-to-b from-blue-100 to-blue-50 p-6 grid space-y-6 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between px-6 items-center text-center md:text-left">
+        <Image className="w-16 md:w-20" src={csc} alt="csc" />
+        <div className="my-4 md:my-0">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Matya Saksharta</h2>
+          <p className="text-gray-500">Share your experience with us!</p>
+        </div>
+        <Image className="w-16 md:w-20" src={iit} alt="iit" />
+      </div>
+      <div className="w-full max-w-lg mx-auto bg-white p-6 md:p-8 shadow-xl rounded-2xl">
+        <Card>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <Label>Name</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your name"
+                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <Label>You are</Label>
+                <div className="flex flex-wrap gap-2">
+                  {["Govt official", "VLE", "Fisherman"].map((role) => (
+                    <button
+                      key={role}
+                      type="button"
+                      className={`px-4 py-2 rounded-full transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${
+                        formData.role === role
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-700"
+                      }`}
+                      onClick={() => handleRoleSelect(role)}
                     >
-                      <input
-                        type="radio"
-                        name={category.name}
-                        value={num}
-                        checked={formData[category.name] === String(num)}
-                        onChange={handleChange}
-                      />
-                      <span>{num}</span>
-                    </label>
+                      {role}
+                    </button>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-          <div>
-            <Label>Comments</Label>
-            <Textarea
-              name="comments"
-              value={formData.comments}
-              onChange={handleChange}
-              placeholder="Enter your comments"
-              className="w-full"
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+              <div>
+                <Label className="mb-4">How would you rate the event?</Label>
+                {[
+                  { label: "Food", name: "foodRating" },
+                  { label: "Arrangement", name: "arrangementRating" },
+                  { label: "Overall", name: "overallRating" },
+                ].map((category) => (
+                  <div key={category.name} className="mb-2">
+                    <Label>{category.label}</Label>
+                    <div className="flex justify-center md:justify-start space-x-2 mt-2 mb-4">
+                      {emojis.map((emoji, index) => (
+                        <button
+                          key={`${category.name}-${index + 1}`}
+                          type="button"
+                          className={`p-2 text-2xl md:text-3xl rounded-full transition-all duration-200 shadow-md hover:scale-110 ${
+                            formData[category.name] === String(index + 1)
+                              ? "bg-blue-400 text-white"
+                              : "bg-gray-100"
+                          }`}
+                          onClick={() => handleRatingSelect(category.name, String(index + 1))}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <Label>Comments</Label>
+                <Textarea
+                  name="comments"
+                  value={formData.comments}
+                  onChange={handleChange}
+                  placeholder="Enter your comments"
+                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <Button
+                type="submit"
+                className="w-full bg-blue-500 hover:bg-blue-600 transition-all duration-200 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg"
+              >
+                Submit
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 };
 
