@@ -23,7 +23,6 @@ const FeedbackForm = () => {
     comments: "",
     deviceInfo: "",
   });
-  const [forceRender, setForceRender] = useState(false);
 
   useEffect(() => {
     const getDeviceInfo = () => {
@@ -34,19 +33,11 @@ const FeedbackForm = () => {
   }, []);
 
   const handleRoleSelect = (role) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      role,
-    }));
-    setForceRender((prev) => !prev); // Trigger re-render
+    setFormData({ ...formData, role });
   };
 
   const handleRatingSelect = (name, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    setForceRender((prev) => !prev); // Trigger re-render
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleChange = (e) => {
@@ -129,12 +120,9 @@ const FeedbackForm = () => {
                 <div className=" flex flex-wrap gap-2">
                   {["Govt official", "VLE", "Fisherman"].map((role) => (
                     <button
-                      key={
-                        role +
-                        (formData.role === role ? "-selected" : "-unselected")
-                      }
+                      key={role}
                       type="button"
-                      className={`md:px-4 md:py-2 px-4 py-2 rounded-full transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${
+                      className={`md:px-4  md:py-2 px-4 py-2 rounded-full transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${
                         formData.role === role
                           ? "bg-blue-500 text-white"
                           : "bg-gray-200 text-gray-700"
@@ -158,9 +146,7 @@ const FeedbackForm = () => {
                     <div className="flex justify-center md:justify-start space-x-2 mt-2 mb-4">
                       {emojis.map((emoji, index) => (
                         <button
-                          key={`${category.name}-${index + 1}-${
-                            formData[category.name]
-                          }`}
+                          key={`${category.name}-${index + 1}`}
                           type="button"
                           className={`p-2 text-2xl md:text-3xl rounded-full transition-all duration-200 shadow-md hover:scale-110 ${
                             formData[category.name] === String(index + 1)
