@@ -37,7 +37,7 @@ const FeedbackForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("postgresql://postgres:NFDP%40123@db.oqafdkucsscaztkronud.supabase.co:5432/postgres/feedback", {
+      const response = await fetch("/api/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
