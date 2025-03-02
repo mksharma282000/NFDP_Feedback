@@ -37,7 +37,7 @@ const FeedbackForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://nfdp-feedback.vercel.app/api/feedback", {
+      const response = await fetch("/api/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,17 @@ const FeedbackForm = () => {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      // ✅ Ensure response is not empty before parsing JSON
+      const text = await response.text(); // Get response as text
+      let result;
+      try {
+        result = JSON.parse(text); // Try parsing JSON
+      } catch (error) {
+        console.error("Response is not valid JSON:", text);
+        alert("Unexpected server response. Please try again.");
+        return;
+      }
+
       if (response.ok) {
         alert("Thank you for your feedback!");
         setFormData({
@@ -58,7 +68,7 @@ const FeedbackForm = () => {
           deviceInfo: "",
         });
       } else {
-        alert(`Error: ${result.error}`);
+        alert(`Error: ${result.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Submit Error:", error);
