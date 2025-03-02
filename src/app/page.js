@@ -44,7 +44,7 @@ const FeedbackForm = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       // ✅ Ensure response is not empty before parsing JSON
       const text = await response.text(); // Get response as text
       let result;
@@ -55,7 +55,7 @@ const FeedbackForm = () => {
         alert("Unexpected server response. Please try again.");
         return;
       }
-
+  
       if (response.ok) {
         alert("Thank you for your feedback!");
         setFormData({
@@ -75,6 +75,7 @@ const FeedbackForm = () => {
       alert("Something went wrong. Please try again later.");
     }
   };
+  
 
   return (
     <Card className="max-w-lg mx-auto p-6 shadow-md rounded-2xl">
