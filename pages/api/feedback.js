@@ -3,15 +3,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  console.log(process.env.DATABASE_URL);
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).json({ message: "CORS preflight successful" }); // ✅ Return valid JSON for OPTIONS
-  }
-
   if (req.method === "POST") {
     try {
       const {
@@ -24,6 +15,7 @@ export default async function handler(req, res) {
         deviceInfo,
       } = req.body;
 
+      // Validate input
       if (
         !name ||
         !role ||
@@ -36,6 +28,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "All fields are required" });
       }
 
+      // Save feedback to database
       const feedback = await prisma.feedback.create({
         data: {
           name,
@@ -44,7 +37,7 @@ export default async function handler(req, res) {
           arrangementRating: Number(arrangementRating),
           overallRating: Number(overallRating),
           comments,
-          deviceInfo,
+          deviceInfo, // Now correctly storing device info
         },
       });
 
@@ -53,9 +46,9 @@ export default async function handler(req, res) {
       console.error("Database Error:", error);
       return res
         .status(500)
-        .json({ error: "Something went wrong on the server" }); // ✅ Ensure valid JSON on error
+        .json({ error: "Something went wrong on the server" });
     }
   } else {
-    return res.status(405).json({ error: "Method not allowed" }); // ✅ Ensure valid JSON on 405 error
+    return res.status(405).json({ error: "Method not allowed" });
   }
 }

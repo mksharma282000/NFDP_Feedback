@@ -8,10 +8,28 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import csc from "../assets/csc.png";
 import iit from "../assets/iit.png";
-
 import Image from "next/image";
 
-const emojis = ["😡", "😟", "😐", "😊", "😍"]; // Emoji ratings
+// Import GIF and static Emojis
+import angryEmoji from "../assets/rate1.gif";
+import sadEmoji from "../assets/rate2.gif";
+import neutralEmoji from "../assets/rate3.gif";
+import happyEmoji from "../assets/rate4.gif";
+import loveEmoji from "../assets/rate5.gif";
+
+import angryStatic from "../assets/1.1.png";
+import sadStatic from "../assets/2.2.png";
+import neutralStatic from "../assets/3.1.png";
+import happyStatic from "../assets/4.1.png";
+import loveStatic from "../assets/5.1.png";
+
+const emojis = [
+  { label: "Angry", value: "1", gif: angryEmoji, static: angryStatic },
+  { label: "Sad", value: "2", gif: sadEmoji, static: sadStatic },
+  { label: "Neutral", value: "3", gif: neutralEmoji, static: neutralStatic },
+  { label: "Happy", value: "4", gif: happyEmoji, static: happyStatic },
+  { label: "Love", value: "5", gif: loveEmoji, static: loveStatic },
+];
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +42,14 @@ const FeedbackForm = () => {
     deviceInfo: "",
   });
 
+  const [activeAnimation, setActiveAnimation] = useState({
+    foodRating: null,
+    arrangementRating: null,
+    overallRating: null,
+  });
+
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getDeviceInfo = () => {
       const userAgent = navigator.userAgent;
@@ -33,20 +59,28 @@ const FeedbackForm = () => {
   }, []);
 
   const handleRoleSelect = (role) => {
-    setFormData({ ...formData, role });
+    setFormData((prev) => ({ ...prev, role }));
   };
 
-  const handleRatingSelect = (name, value) => {
-    setFormData({ ...formData, [name]: value });
+  const handleRatingSelect = (category, value) => {
+    setFormData((prev) => ({ ...prev, [category]: value }));
+
+    // Toggle the GIF for this specific category
+    setActiveAnimation((prev) => ({
+      ...prev,
+      [category]: prev[category] === value ? null : value,
+    }));
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const response = await fetch("/api/feedback", {
         method: "POST",
@@ -56,33 +90,32 @@ const FeedbackForm = () => {
         body: JSON.stringify(formData),
       });
 
-      const text = await response.text();
-      let result;
-      try {
-        result = JSON.parse(text);
-      } catch (error) {
-        console.error("Response is not valid JSON:", text);
-        alert("Unexpected server response. Please try again.");
-        return;
-      }
-
+      const result = await response.json();
       if (response.ok) {
         alert("Thank you for your feedback!");
-        setFormData({
+        setFormData((prev) => ({
           name: "",
           role: "",
           foodRating: "",
           arrangementRating: "",
           overallRating: "",
           comments: "",
-          deviceInfo: "",
+          deviceInfo: prev.deviceInfo, // Retain device info
+        }));
+
+        setActiveAnimation({
+          foodRating: null,
+          arrangementRating: null,
+          overallRating: null,
         });
       } else {
-        alert(`Error: ${result.error || "Unknown error"}`);
+        alert(`Error: ${result.error}`);
       }
     } catch (error) {
       console.error("Submit Error:", error);
       alert("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,10 +133,10 @@ const FeedbackForm = () => {
         </div>
         <Image className="w-10 md:w-20" src={iit} alt="iit" />
       </div>
-      <div className="w-[90%] max-w-lg mx-auto bg-white p-4 md:p-8 shadow-xl rounded-2xl">
+      <div className="w-[90%] mx-auto bg-white p-4 md:p-8 shadow-xl rounded-2xl">
         <Card>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label>Name</Label>
                 <Input
@@ -112,52 +145,55 @@ const FeedbackForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Enter your name"
-                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+                  required
                 />
               </div>
               <div>
                 <Label>You are</Label>
-                <div className=" flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                   {["Govt official", "VLE", "Fisherman"].map((role) => (
-                    <button
+                    <Button
                       key={role}
                       type="button"
-                      className={`md:px-4  md:py-2 px-4 py-2 rounded-full transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${
-                        formData.role === role
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 text-gray-700"
-                      }`}
+                      variant={formData.role === role ? "default" : "outline"}
                       onClick={() => handleRoleSelect(role)}
                     >
                       {role}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
               <div>
                 <Label className="mb-4">How would you rate the event?</Label>
                 {[
-                  { label: "Food", name: "foodRating" },
-                  { label: "Arrangement", name: "arrangementRating" },
-                  { label: "Overall", name: "overallRating" },
-                ].map((category) => (
-                  <div key={category.name} className="mb-2">
-                    <Label>{category.label}</Label>
-                    <div className="flex justify-center md:justify-start space-x-2 mt-2 mb-4">
-                      {emojis.map((emoji, index) => (
+                  { key: "foodRating", label: "Food Quality" },
+                  { key: "arrangementRating", label: "Arrangements" },
+                  { key: "overallRating", label: "Overall Experience" },
+                ].map(({ key, label }) => (
+                  <div key={key}>
+                    <Label>{label}</Label>
+                    <div className="flex justify-center space-x-2 mt-2 mb-4">
+                      {emojis.map((emoji) => (
                         <button
-                          key={`${category.name}-${index + 1}`}
+                          key={emoji.value}
                           type="button"
-                          className={`p-2 text-2xl md:text-3xl rounded-full transition-all duration-200 shadow-md hover:scale-110 ${
-                            formData[category.name] === String(index + 1)
-                              ? "bg-blue-400 text-white"
+                          className={`p-2 rounded-full ${
+                            formData[key] === emoji.value
+                              ? "bg-blue-400"
                               : "bg-gray-100"
                           }`}
-                          onClick={() =>
-                            handleRatingSelect(category.name, String(index + 1))
-                          }
+                          onClick={() => handleRatingSelect(key, emoji.value)}
                         >
-                          {emoji}
+                          <Image
+                            src={
+                              activeAnimation[key] === emoji.value
+                                ? emoji.gif
+                                : emoji.static
+                            }
+                            alt={emoji.label}
+                            width={40}
+                            height={40}
+                          />
                         </button>
                       ))}
                     </div>
@@ -176,9 +212,10 @@ const FeedbackForm = () => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 transition-all duration-200 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg"
+                className="w-full bg-blue-500 text-white py-3 rounded-lg"
+                disabled={loading}
               >
-                Submit
+                {loading ? "Submitting..." : "Submit"}
               </Button>
             </form>
           </CardContent>
