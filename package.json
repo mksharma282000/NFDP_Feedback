@@ -10,7 +10,6 @@
     "postinstall": "npx prisma generate && npx prisma migrate deploy"
   },
   "dependencies": {
-    "@prisma/client": "^6.4.1",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@shadcn/ui": "^0.0.4",
@@ -25,7 +24,9 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@prisma/client": "^6.4.1",
     "@tailwindcss/postcss": "^4",
+    "prisma": "^6.4.1",
     "tailwindcss": "^4.0.9"
   }
 }
