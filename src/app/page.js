@@ -23,6 +23,7 @@ const FeedbackForm = () => {
     comments: "",
     deviceInfo: "",
   });
+  const [forceRender, setForceRender] = useState(false);
 
   useEffect(() => {
     const getDeviceInfo = () => {
@@ -33,11 +34,19 @@ const FeedbackForm = () => {
   }, []);
 
   const handleRoleSelect = (role) => {
-    setFormData({ ...formData, role });
+    setFormData((prevData) => ({
+      ...prevData,
+      role,
+    }));
+    setForceRender((prev) => !prev); // Trigger re-render
   };
 
   const handleRatingSelect = (name, value) => {
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setForceRender((prev) => !prev); // Trigger re-render
   };
 
   const handleChange = (e) => {
@@ -87,16 +96,20 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-100 to-blue-50 p-6 grid space-y-6 min-h-screen">
-      <div className="flex flex-col md:flex-row justify-between px-6 items-center text-center md:text-left">
-        <Image className="w-16 md:w-20" src={csc} alt="csc" />
+    <div className="bg-gradient-to-b from-blue-100 to-blue-50 md:p-6 p-2 grid md:space-y-6 space-y-2 min-h-screen">
+      <div className="flex flex-row justify-between px-6 items-center text-center md:text-left">
+        <Image className="w-12 md:w-20" src={csc} alt="csc" />
         <div className="my-4 md:my-0">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Matya Saksharta</h2>
-          <p className="text-gray-500">Share your experience with us!</p>
+          <h2 className="text-xl md:text-3xl font-bold text-gray-800">
+            Matya Saksharta
+          </h2>
+          <p className="text-gray-500 text-xs">
+            Share your experience with us!
+          </p>
         </div>
-        <Image className="w-16 md:w-20" src={iit} alt="iit" />
+        <Image className="w-10 md:w-20" src={iit} alt="iit" />
       </div>
-      <div className="w-full max-w-lg mx-auto bg-white p-6 md:p-8 shadow-xl rounded-2xl">
+      <div className="w-[90%] max-w-lg mx-auto bg-white p-4 md:p-8 shadow-xl rounded-2xl">
         <Card>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -113,12 +126,15 @@ const FeedbackForm = () => {
               </div>
               <div>
                 <Label>You are</Label>
-                <div className="flex flex-wrap gap-2">
+                <div className=" flex flex-wrap gap-2">
                   {["Govt official", "VLE", "Fisherman"].map((role) => (
                     <button
-                      key={role}
+                      key={
+                        role +
+                        (formData.role === role ? "-selected" : "-unselected")
+                      }
                       type="button"
-                      className={`px-4 py-2 rounded-full transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${
+                      className={`md:px-4 md:py-2 px-4 py-2 rounded-full transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${
                         formData.role === role
                           ? "bg-blue-500 text-white"
                           : "bg-gray-200 text-gray-700"
@@ -142,14 +158,18 @@ const FeedbackForm = () => {
                     <div className="flex justify-center md:justify-start space-x-2 mt-2 mb-4">
                       {emojis.map((emoji, index) => (
                         <button
-                          key={`${category.name}-${index + 1}`}
+                          key={`${category.name}-${index + 1}-${
+                            formData[category.name]
+                          }`}
                           type="button"
                           className={`p-2 text-2xl md:text-3xl rounded-full transition-all duration-200 shadow-md hover:scale-110 ${
                             formData[category.name] === String(index + 1)
                               ? "bg-blue-400 text-white"
                               : "bg-gray-100"
                           }`}
-                          onClick={() => handleRatingSelect(category.name, String(index + 1))}
+                          onClick={() =>
+                            handleRatingSelect(category.name, String(index + 1))
+                          }
                         >
                           {emoji}
                         </button>
