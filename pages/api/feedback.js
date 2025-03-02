@@ -3,6 +3,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
+  if (req.method === "OPTIONS") {
+    return res.status(200).end(); // Allow CORS preflight
+  }
   if (req.method === "POST") {
     try {
       const {
@@ -14,6 +17,7 @@ export default async function handler(req, res) {
         comments,
         deviceInfo,
       } = req.body;
+      console.log("Working")
 
       // Validate input
       if (
