@@ -6,7 +6,12 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "npx prisma generate",
+    "deploy": "npx prisma migrate deploy"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.2",
