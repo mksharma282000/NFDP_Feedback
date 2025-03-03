@@ -149,7 +149,7 @@ const FeedbackForm = () => {
                 <div>
                   <Label>Name</Label>
                   <Input
-                    type="text"
+                    type="text" 
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
