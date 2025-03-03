@@ -9,7 +9,8 @@
     "lint": "next lint",
     "generate": "npx prisma generate",
     "deploy": "npx prisma migrate deploy",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "gitadd": "git add . && git commit -m \"update\" && git push origin main && vercel --prod"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"
