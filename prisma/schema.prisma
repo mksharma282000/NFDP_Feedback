@@ -3,23 +3,20 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider  = "mongodb"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
-        
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This table contains check constraints and requires additional setup for migrations.
+/// Visit https://pris.ly/d/check-constraints for more info.
 model Feedback {
-  id               String   @id @default(uuid()) // Unique ID
-  name             String   // User's name
-  role             String   // Selected role (A, B, or C)
-  foodRating       Int      // Food rating (1-5)
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId  // Unique MongoDB ObjectId
+  name              String   // User's name
+  role              String   // Selected role (A, B, or C)
+  foodRating        Int      // Food rating (1-5)
   arrangementRating Int      // Arrangement rating (1-5)
-  overallRating    Int      // Overall rating (1-5)
-  comments         String   // User comments
-  deviceInfo       String   // Device model and user-agent info
-  createdAt        DateTime @default(now()) // Timestamp
+  overallRating     Int      // Overall rating (1-5)
+  comments          String?  // User comments (optional)
+  deviceInfo        String   // Device model and user-agent info
+  createdAt         DateTime @default(now()) // Timestamp
 }
-
-
