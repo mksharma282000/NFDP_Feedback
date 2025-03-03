@@ -137,7 +137,7 @@ const FeedbackForm = () => {
           </div>
 
           <h2 className="flex justify-center text-[40px] md:text-3xl font-bold text-[#0060A9] text-center items-center">
-            Matya Saksharta
+            Matsya Saksharta
           </h2>
           {/* <p className="text-gray-500 text-xs">
             Share your experience with us!
@@ -147,9 +147,9 @@ const FeedbackForm = () => {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label>Name</Label>
+                  <Label>Full Name</Label>
                   <Input
-                    type="text" 
+                    type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
@@ -158,7 +158,7 @@ const FeedbackForm = () => {
                   />
                 </div>
                 <div>
-                  <Label className="mt-6">You are</Label>
+                  <Label className="mt-6">Yours work</Label>
                   <div className="flex flex-wrap justify-center gap-7 mb-[24px]">
                     {["Govt official", "VLE", "Fisherman"].map((role) => (
                       <Button
@@ -173,14 +173,18 @@ const FeedbackForm = () => {
                   </div>
                 </div>
                 <div>
-                  <Label className="font-Montserrat">How would you rate the event?</Label>
+                  <Label className="font-Montserrat">
+                    How would you rate the event?
+                  </Label>
                   {[
                     { key: "foodRating", label: "Food Quality" },
                     { key: "arrangementRating", label: "Arrangements" },
                     { key: "overallRating", label: "Overall Experience" },
                   ].map(({ key, label }) => (
                     <div key={key} className="grid grid-cols-2 ">
-                      <Label className="pl-6 align-top items-start">{label}</Label>
+                      <Label className="pl-6 align-top items-start">
+                        {label}
+                      </Label>
                       <div className="flex justify-between space-x-2 mb-[24px] pr-6">
                         {emojis.map((emoji) => (
                           <button
@@ -202,7 +206,6 @@ const FeedbackForm = () => {
                               alt={emoji.label}
                               width={40}
                               height={40}
-                              
                             />
                           </button>
                         ))}
@@ -211,7 +214,7 @@ const FeedbackForm = () => {
                   ))}
                 </div>
                 <div>
-                  <Label>Comments</Label>
+                  <Label>Some Words</Label>
                   <Textarea
                     name="comments"
                     value={formData.comments}
@@ -222,13 +225,13 @@ const FeedbackForm = () => {
                 </div>
                 <div className="border-b-2 border-[#D5D5D5] pt-5"></div>
                 <div className="flex justify-end pt-5">
-                <Button
-                  type="submit"
-                  className="w-40 bg-blue-500 text-white py-3 rounded-lg"
-                  disabled={loading}
-                >
-                  {loading ? "Submitting..." : "Submit"}
-                </Button>
+                  <Button
+                    type="submit"
+                    className="w-40 bg-blue-500 text-white py-3 rounded-lg"
+                    disabled={loading}
+                  >
+                    {loading ? "Submitting..." : "Submit"}
+                  </Button>
                 </div>
               </form>
             </CardContent>
