@@ -10,7 +10,7 @@
     "generate": "npx prisma generate",
     "deploy": "npx prisma migrate deploy",
     "postinstall": "prisma generate",
-    "gitadd": "git add . && git commit -m \"update\" && git push origin main && vercel --prod"
+    "gitadd": "git add . && git commit -m \"update\" && git push origin main"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

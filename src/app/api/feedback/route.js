@@ -36,10 +36,16 @@ export async function POST(req) {
          },
       });
 
+      if(!feedback){
+        return new Response(JSON.stringify({ success: false }), {
+           status: 202,
+           headers: { "Content-Type": "application/json" },
+        });
+      }
       return new Response(JSON.stringify({ success: true, feedback }), {
-         status: 200,
-         headers: { "Content-Type": "application/json" },
-      });
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+     })
    } catch (error) {
       console.error("Database Error:", error);
       return new Response(JSON.stringify({ error }), {
