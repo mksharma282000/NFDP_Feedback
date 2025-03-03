@@ -121,7 +121,7 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div>
+    <div className="h-screen ">
       <div className="absolute ">
         <Image
           src={background}
@@ -129,20 +129,20 @@ const FeedbackForm = () => {
           className="min-h-screen bg-no-repeat  bg-center"
         ></Image>
       </div>
-      <div className="relative  md:p-6 p-2 grid md:space-y-6 space-y-2 min-h-screen">
-        <div className="flex flex-row justify-between px-6 items-center text-center md:text-left">
-          <Image className="w-[111px] h-[60px]" src={csc} alt="csc" />
-          <Image className="w-[337px] h-[68px]" src={iit} alt="iit" />
-        </div>
+      <div className="relative">
+        <div className=" md:p-8 p-2 grid md:space-y-0 space-y-2">
+          <div className="flex flex-row justify-between px-6 items-center text-center md:text-left">
+            <Image className="w-[111px] h-[60px]" src={csc} alt="csc" />
+            <Image className="w-[337px] h-[68px]" src={iit} alt="iit" />
+          </div>
 
-        <h2 className="flex justify-center text-[40px] md:text-3xl font-bold text-[#0060A9] text-center">
-          Matya Saksharta
-        </h2>
-        {/* <p className="text-gray-500 text-xs">
+          <h2 className="flex justify-center text-[40px] md:text-3xl font-bold text-[#0060A9] text-center items-center">
+            Matya Saksharta
+          </h2>
+          {/* <p className="text-gray-500 text-xs">
             Share your experience with us!
           </p> */}
 
-       
           <Card>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -158,8 +158,8 @@ const FeedbackForm = () => {
                   />
                 </div>
                 <div>
-                  <Label>You are</Label>
-                  <div className="flex flex-wrap gap-2">
+                  <Label className="mt-6">You are</Label>
+                  <div className="flex flex-wrap justify-center gap-7 mb-[24px]">
                     {["Govt official", "VLE", "Fisherman"].map((role) => (
                       <Button
                         key={role}
@@ -173,20 +173,20 @@ const FeedbackForm = () => {
                   </div>
                 </div>
                 <div>
-                  <Label className="">How would you rate the event?</Label>
+                  <Label className="font-Montserrat">How would you rate the event?</Label>
                   {[
                     { key: "foodRating", label: "Food Quality" },
                     { key: "arrangementRating", label: "Arrangements" },
                     { key: "overallRating", label: "Overall Experience" },
                   ].map(({ key, label }) => (
-                    <div key={key} className="grid grid-cols-2">
-                      <Label>{label}</Label>
-                      <div className="flex justify-center space-x-2 mb-[24px]">
+                    <div key={key} className="grid grid-cols-2 ">
+                      <Label className="pl-6 align-top items-start">{label}</Label>
+                      <div className="flex justify-between space-x-2 mb-[24px] pr-6">
                         {emojis.map((emoji) => (
                           <button
                             key={emoji.value}
                             type="button"
-                            className={`p-2 rounded-full ${
+                            className={`p-0 rounded-full object-fill ${
                               formData[key] === emoji.value
                                 ? "bg-blue-400"
                                 : "bg-gray-100"
@@ -202,6 +202,7 @@ const FeedbackForm = () => {
                               alt={emoji.label}
                               width={40}
                               height={40}
+                              
                             />
                           </button>
                         ))}
@@ -219,17 +220,20 @@ const FeedbackForm = () => {
                     className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
+                <div className="border-b-2 border-[#D5D5D5] pt-5"></div>
+                <div className="flex justify-end pt-5">
                 <Button
                   type="submit"
-                  className="w-full bg-blue-500 text-white py-3 rounded-lg"
+                  className="w-40 bg-blue-500 text-white py-3 rounded-lg"
                   disabled={loading}
                 >
                   {loading ? "Submitting..." : "Submit"}
                 </Button>
+                </div>
               </form>
             </CardContent>
           </Card>
-        
+        </div>
       </div>
     </div>
   );

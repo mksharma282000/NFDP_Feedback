@@ -1,4 +1,7 @@
 import "./globals.css";
+import '@fontsource/montserrat'; // Default weight 400
+import '@fontsource/montserrat/700.css'; // Specific weight
+
 
 export const metadata = {
   title: "NFDP Feedback",
