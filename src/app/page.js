@@ -182,7 +182,7 @@ const FeedbackForm = () => {
                   </div>
                 </div>
                 <div>
-                  <Label className="font-Montserrat">Rating</Label>
+                  <Label className="font-Montserrat mb-[-8px]">Rating</Label>
                   {[
                     {
                       key: "foodRating",
