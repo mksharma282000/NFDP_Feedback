@@ -93,7 +93,7 @@ const FeedbackForm = () => {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Thank you for your feedback!");
+        alert("Thank you for your feedback. We appreciate your dedication to strengthening the fisheries sector through NFDP & PM-MKSSY. Your efforts are shaping a more empowered and connected fisheries ecosystem! Best regards,NFDP team");
         setFormData((prev) => ({
           name: "",
           role: "",
