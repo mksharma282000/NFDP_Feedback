@@ -126,17 +126,25 @@ const FeedbackForm = () => {
         <Image
           src={background}
           alt="backgroundimg"
-          className="min-h-screen bg-no-repeat  bg-center"
+          className="min-h-screen bg-no-repeat bg-center"
         ></Image>
       </div>
       <div className="relative">
-        <div className=" md:p-8 p-2 grid md:space-y-0 space-y-2">
+        <div className="md:p-8 p-4 grid md:space-y-0 space-y-2">
           <div className="flex flex-row justify-between px-6 items-center text-center md:text-left">
-            <Image className="w-[111px] h-[60px]" src={csc} alt="csc" />
-            <Image className="w-[337px] h-[68px]" src={iit} alt="iit" />
+            <Image
+              className="sm:w-[111px] w-16 sm:h-[60px]"
+              src={csc}
+              alt="csc"
+            />
+            <Image
+              className="sm:w-[337px] w-48 sm:h-[68px]"
+              src={iit}
+              alt="iit"
+            />
           </div>
 
-          <h2 className="flex justify-center text-[40px] md:text-3xl font-bold text-[#0060A9] text-center items-center">
+          <h2 className="flex my-4 sm:my-10  justify-center sm:text-[40px] text-2xl md:text-3xl font-bold text-[#0060A9] text-center items-center">
             Matsya Saksharta
           </h2>
           {/* <p className="text-gray-500 text-xs">
@@ -159,12 +167,13 @@ const FeedbackForm = () => {
                 </div>
                 <div>
                   <Label className="mt-6">Yours work</Label>
-                  <div className="flex flex-wrap justify-center gap-7 mb-[24px]">
-                    {["Govt official", "VLE", "Fisherman"].map((role) => (
+                  <div className="flex flex-wrap justify-center gap-2 sm:gap-2 mb-[24px]">
+                    {["Govt official", "V.L.E.", "Beneficiary"].map((role) => (
                       <Button
                         key={role}
                         type="button"
                         variant={formData.role === role ? "outline" : "default"}
+                        className="text-xs sm:text-xl sm:w-44 w-20"
                         onClick={() => handleRoleSelect(role)}
                       >
                         {role}
@@ -173,19 +182,29 @@ const FeedbackForm = () => {
                   </div>
                 </div>
                 <div>
-                  <Label className="font-Montserrat">
-                    How would you rate the event?
-                  </Label>
+                  <Label className="font-Montserrat">Rating</Label>
                   {[
-                    { key: "foodRating", label: "Food Quality" },
-                    { key: "arrangementRating", label: "Arrangements" },
-                    { key: "overallRating", label: "Overall Experience" },
+                    {
+                      key: "foodRating",
+                      label:
+                        "1. How easy was it to navigate and locate the information you needed on the platform?",
+                    },
+                    {
+                      key: "arrangementRating",
+                      label:
+                        "2. How likely are you to recommend the platform to your peers or colleagues in the fisheries sector?",
+                    },
+                    {
+                      key: "overallRating",
+                      label:
+                        "3. How satisfied are you with the accuracy and relevance of the information provided on the platform?",
+                    },
                   ].map(({ key, label }) => (
-                    <div key={key} className="grid grid-cols-2 ">
-                      <Label className="pl-6 align-top items-start">
+                    <div key={key} className="grid border-b border-b-gray-200">
+                      <Label className="mt-4 sm:mt-8 sm:pl-4 px-1 align-top items-start font-light sm:text-[20px] text-[14px]">
                         {label}
                       </Label>
-                      <div className="flex justify-between space-x-2 mb-[24px] pr-6">
+                      <div className="flex justify-center space-x-2 sm:gap-6 gap-2 sm:mb-[38px] mb-[20px] pr-6">
                         {emojis.map((emoji) => (
                           <button
                             key={emoji.value}
@@ -204,8 +223,7 @@ const FeedbackForm = () => {
                                   : emoji.static
                               }
                               alt={emoji.label}
-                              width={40}
-                              height={40}
+                              className="w-8 h-8 sm:w-16 sm:h-16"
                             />
                           </button>
                         ))}
@@ -220,7 +238,7 @@ const FeedbackForm = () => {
                     value={formData.comments}
                     onChange={handleChange}
                     placeholder="Enter your comments"
-                    className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+                    className="w-full h-24 border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
                 <div className="border-b-2 border-[#D5D5D5] pt-5"></div>
